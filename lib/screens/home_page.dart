@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wheather_app/providers/user_provider.dart';
 import 'package:wheather_app/services/firestore.dart';
 import 'package:wheather_app/utilities/utils.dart' as utils;
 
@@ -9,6 +11,8 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    final user = userProvider.user;
     return Scaffold( 
       body: 
       Container(
@@ -118,7 +122,12 @@ class MyHomePage extends StatelessWidget {
                 minimumSize: Size(270, 40) 
               ),
               onPressed: ()
-                {firestoreService.addTest();},
+                {
+                  if ( user != null ){
+                  final lastname = user.lastName ;
+                  print("Welcome $lastname");
+                  }
+                  },
               child: Text("My Profile" , style: TextStyle(
                 fontSize: 24 ,
               ),
