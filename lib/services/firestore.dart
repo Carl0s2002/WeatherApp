@@ -6,7 +6,7 @@ class FirestoreService {
     final db = FirebaseFirestore.instance ;
 
 
-    Future<void> createUser(AppUser user) async{
+    Future<void> createOrEditUser(AppUser user) async{
     final userDetails = <String, String>{
       "First Name" :user.firstName , 
       "Last Name" : user.lastName , 

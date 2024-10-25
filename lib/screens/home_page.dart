@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wheather_app/providers/user_provider.dart';
+import 'package:wheather_app/screens/profile_page.dart';
 import 'package:wheather_app/services/firestore.dart';
 import 'package:wheather_app/utilities/utils.dart' as utils;
 
@@ -126,6 +127,7 @@ class MyHomePage extends StatelessWidget {
                   if ( user != null ){
                   final lastname = user.lastName ;
                   print("Welcome $lastname");
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePage())) ;
                   }
                   },
               child: Text("My Profile" , style: TextStyle(

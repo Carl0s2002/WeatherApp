@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wheather_app/models/user.dart';
@@ -87,7 +86,6 @@ class _LoginPageState extends State<LoginPage> {
                           if (loginResponse == true) {
                             try {
                               AppUser user = await firestoreService.getUser(email.text);
-                              UserProvider userProvider = UserProvider();
                               Provider.of<UserProvider>(context, listen: false).setUser(user);
                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyHomePage())); 
                             } catch (e) {

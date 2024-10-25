@@ -83,6 +83,7 @@ class _RegisterPageState extends State<RegisterPage>{
                 ) ,
                 SizedBox(height: 20,),
                 Container(width:300 , child:  TextField(
+                  obscureText: true,
                   controller: password,
                   decoration: InputDecoration(
                   border: OutlineInputBorder(), 
@@ -93,6 +94,7 @@ class _RegisterPageState extends State<RegisterPage>{
                 ) ,
                 SizedBox(height: 20,),
                 Container(width:300 , child:  TextField(
+                  obscureText: true,
                   controller: confirmPassword,
                   decoration: InputDecoration(
                   border: OutlineInputBorder(), 
@@ -106,20 +108,21 @@ class _RegisterPageState extends State<RegisterPage>{
                   backgroundColor: Colors.orangeAccent ,
                   foregroundColor: Colors.white, 
                   minimumSize: Size(200, 30) 
-                ),onPressed: (){
-                  if ( firstName.text != '' && 
-                       lastName.text != '' &&
-                       country.text != '' &&
-                       city.text != '' &&
-                       email.text != '' &&
-                       password.text != '' &&
-                       confirmPassword.text != ''
+                ),onPressed: () async{
+                  if ( firstName.text.isNotEmpty && 
+                       lastName.text.isNotEmpty &&
+                       country.text.isNotEmpty &&
+                       city.text.isNotEmpty &&
+                       email.text.isNotEmpty &&
+                       password.text.isNotEmpty &&
+                       confirmPassword.text.isNotEmpty && 
+                       password.text == confirmPassword.text
                   ){
                   AppUser user = AppUser(firstName: firstName.text, lastName: lastName.text, country: country.text, city: city.text , email: email.text);
                   FirebaseAuthService firebaseAuthService = FirebaseAuthService() ;
                   FirestoreService firestoreService = FirestoreService() ;
-                  firebaseAuthService.createAccount(email.text, password.text) ;
-                  firestoreService.createUser(user) ;
+                  await firebaseAuthService.createAccount(email.text, password.text) ;
+                  await firestoreService.createOrEditUser(user) ;
                   Navigator.pop(context) ;
                   }
                   }, child: Text("Register")),
