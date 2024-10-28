@@ -87,7 +87,10 @@ class _LoginPageState extends State<LoginPage> {
                             try {
                               AppUser user = await firestoreService.getUser(email.text);
                               Provider.of<UserProvider>(context, listen: false).setUser(user);
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyHomePage())); 
+                              setState(() {
+                                isLoading = false ;
+                              });
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage())); 
                             } catch (e) {
                               setState(() {
                                 errorMessage = "Failed to fetch user data.";
@@ -122,6 +125,35 @@ class _LoginPageState extends State<LoginPage> {
                   );
                 },
                 child: Text("Register"),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orangeAccent,
+                  foregroundColor: Colors.white,
+                  minimumSize: Size(200, 30),
+                ),
+                onPressed: () async {
+
+                    FirebaseAuthService firebaseAuthService = FirebaseAuthService() ;
+                    var credentials = await firebaseAuthService.signInWithGoogle() ;
+                    print("HERE!!!!!!!!!!!!!!!!! $credentials") ;
+
+                },
+                child: Text("Sign in with Google"),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orangeAccent,
+                  foregroundColor: Colors.white,
+                  minimumSize: Size(200, 30),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) =>  MyHomePage()),
+                  );
+                },
+                child: Text("Go to Home Page"),
               ),
             ],
           ),

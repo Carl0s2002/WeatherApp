@@ -118,7 +118,7 @@ class _RegisterPageState extends State<RegisterPage>{
                        confirmPassword.text.isNotEmpty && 
                        password.text == confirmPassword.text
                   ){
-                  AppUser user = AppUser(firstName: firstName.text, lastName: lastName.text, country: country.text, city: city.text , email: email.text);
+                  AppUser user = AppUser(firstName: firstName.text, lastName: lastName.text, country: country.text, city: city.text , email: email.text , profilePic: "https://firebasestorage.googleapis.com/v0/b/weather-app-20242310.appspot.com/o/profilePic%2Fblank-profile-picture-973460-anonymous-avatar.jpg?alt=media&token=3fcd761c-7efb-4245-a50c-bf6063cae348");
                   FirebaseAuthService firebaseAuthService = FirebaseAuthService() ;
                   FirestoreService firestoreService = FirestoreService() ;
                   await firebaseAuthService.createAccount(email.text, password.text) ;

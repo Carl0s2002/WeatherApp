@@ -5,12 +5,14 @@ class AppUser {
   String country ;
   String city ;
   String email ;
+  String profilePic ;
   
   AppUser({
     required this.firstName , 
     required this.lastName , 
     required this.country , 
     required this.city , 
-    required this.email
+    required this.email, 
+    required this.profilePic
   });
 }

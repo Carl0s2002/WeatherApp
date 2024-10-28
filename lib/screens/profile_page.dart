@@ -2,9 +2,12 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:wheather_app/providers/user_provider.dart';
 import 'package:wheather_app/screens/edit_page.dart';
+import 'package:wheather_app/services/firebase_storage.dart';
+import 'package:wheather_app/services/firestore.dart';
 import 'package:wheather_app/utilities/utils.dart';
 
 class ProfilePage extends StatefulWidget{
@@ -18,18 +21,32 @@ class ProfilePage extends StatefulWidget{
 
 class _ProfilePageState extends State<ProfilePage> {
 
-  Uint8List? _image ;
-
-  void selectImage() async {
-    // Uint8List img = await pickImage(ImageSource.gallery) ;
-    setState(() {
-      // _image = img ;
-    });
-  }
+  
 
   Widget build(BuildContext context){
     final userProvider = Provider.of<UserProvider>(context);
     final user = userProvider.user;
+    Uint8List? _image ;
+
+    void selectImage() async {
+      Uint8List img = await pickImage(ImageSource.gallery) ;
+      setState(() {
+        _image = img ;
+      });
+
+      if (_image != null ) {
+
+          FirestoreService firestoreService = FirestoreService() ;
+          FirebaseStorageServices firebaseStorageServices = FirebaseStorageServices() ;
+          user!.profilePic = await firebaseStorageServices.uploadProfilePic(_image!, user.email ) ;
+          userProvider.setUser(user) ;
+          await firestoreService.createOrEditUser(user) ;
+
+      }
+        
+
+    }
+
     return Scaffold(
         body: Container(
           color: const Color.fromARGB(255, 68, 71, 255),
@@ -38,8 +55,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   SizedBox(height: 100 ,),
                   Stack(
-                    children: [ CircleAvatar(
-                      backgroundImage: NetworkImage("https://www.telework.ro/wp-content/uploads/2022/08/blank-profile-picture-973460-anonymous-avatar.jpg"),
+                    children: [ 
+                      CircleAvatar(
+                      backgroundImage: NetworkImage(user!.profilePic),
                       maxRadius: 80,
                     ),
                     Positioned(bottom: -10, left: 100,child: IconButton(onPressed: selectImage, icon: const Icon(Icons.add_a_photo), ))

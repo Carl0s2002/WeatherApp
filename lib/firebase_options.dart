@@ -63,6 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '819284969310',
     projectId: 'weather-app-20242310',
     storageBucket: 'weather-app-20242310.appspot.com',
+    androidClientId: '819284969310-cgh0msb415q4t94p1n9qami12f8pe1fi.apps.googleusercontent.com',
+    iosClientId: '819284969310-3qphphoef5bvfsf1jdlkp4ivdclm10s5.apps.googleusercontent.com',
     iosBundleId: 'com.example.wheatherApp',
   );
 
@@ -72,6 +74,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '819284969310',
     projectId: 'weather-app-20242310',
     storageBucket: 'weather-app-20242310.appspot.com',
+    androidClientId: '819284969310-cgh0msb415q4t94p1n9qami12f8pe1fi.apps.googleusercontent.com',
+    iosClientId: '819284969310-3qphphoef5bvfsf1jdlkp4ivdclm10s5.apps.googleusercontent.com',
     iosBundleId: 'com.example.wheatherApp',
   );
 

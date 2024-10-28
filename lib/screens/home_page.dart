@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wheather_app/models/user.dart';
 import 'package:wheather_app/providers/user_provider.dart';
 import 'package:wheather_app/screens/profile_page.dart';
+import 'package:wheather_app/services/firebase_auth.dart';
 import 'package:wheather_app/services/firestore.dart';
 import 'package:wheather_app/utilities/utils.dart' as utils;
 
@@ -116,6 +118,7 @@ class MyHomePage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 100,),
+            user != null ?
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.orangeAccent ,
@@ -134,7 +137,45 @@ class MyHomePage extends StatelessWidget {
                 fontSize: 24 ,
               ),
               ),
+               )
+               :
+               ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.orangeAccent ,
+                foregroundColor: Colors.white, 
+                minimumSize: Size(270, 40) 
+              ),
+              onPressed: ()
+                {
+                  Navigator.pop(context) ;
+                  },
+              child: Text("Log in" , style: TextStyle(
+                fontSize: 24 ,
+              ),
+              ),
                ),
+               SizedBox(height: 10,) , 
+               user != null ?
+               ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.orangeAccent ,
+                foregroundColor: Colors.white, 
+                minimumSize: Size(270, 40) 
+              ),
+              onPressed: ()async
+                {
+                  FirebaseAuthService firebaseAuthService = FirebaseAuthService() ;
+                  userProvider.setUser(null) ;
+                  await firebaseAuthService.logout() ;
+                  Navigator.pop(context) ;
+                },
+                child: Text("Log out" , style: TextStyle(
+                fontSize: 24 ,
+              ),
+              ),
+               )
+               :
+               SizedBox.shrink()
           ],
         ),
       ),

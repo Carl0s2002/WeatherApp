@@ -12,7 +12,8 @@ class FirestoreService {
       "Last Name" : user.lastName , 
       "Country" : user.country ,  
       "City" : user.city ,
-      "Email" : user.email 
+      "Email" : user.email , 
+      "Profile Picture" : user.profilePic
     } ;
     await db
               .collection("users")
@@ -33,7 +34,8 @@ class FirestoreService {
         lastName: data['Last Name'],    
         country: data['Country'],      
         city: data['City'],            
-        email: email                   
+        email: email , 
+        profilePic: data['Profile Picture']                   
       );
       return user;
     } else {
