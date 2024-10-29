@@ -28,17 +28,30 @@ class FirebaseAuthService {
   }
 
   Future<void> logout() async{
-    await auth.signOut() ;
+    if ( auth.currentUser!.providerData[0].providerId == "google.com") {
+        final googleSignIn = GoogleSignIn() ;
+        await googleSignIn.signOut() ;
+    }
+    else{
+      await auth.signOut() ;
+    }
   } 
 
   Future<UserCredential> signInWithGoogle() async {
-  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  final GoogleSignIn googleSignIn = GoogleSignIn();
 
-  final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+  final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+
+  if (googleUser == null) {
+
+    throw Exception("Sign-in canceled by user.");
+  }
+
+  final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
 
   final credential = GoogleAuthProvider.credential(
-    accessToken: googleAuth?.accessToken,
-    idToken: googleAuth?.idToken,
+    accessToken: googleAuth.accessToken,
+    idToken: googleAuth.idToken,
   );
 
   return await FirebaseAuth.instance.signInWithCredential(credential);

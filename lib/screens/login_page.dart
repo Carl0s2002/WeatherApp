@@ -135,9 +135,20 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () async {
 
                     FirebaseAuthService firebaseAuthService = FirebaseAuthService() ;
+                    FirestoreService firestoreService = FirestoreService() ;
                     var credentials = await firebaseAuthService.signInWithGoogle() ;
-                    print("HERE!!!!!!!!!!!!!!!!! $credentials") ;
-
+                    var response = await firestoreService.doesUserExist(credentials.user!.email!) ;
+                    if ( response == false ) {
+                      AppUser user = AppUser(firstName: credentials.additionalUserInfo!.profile!['family_name'], lastName: credentials.additionalUserInfo!.profile!['given_name'], country: "", city: "", email: credentials.user!.email!, profilePic: "https://firebasestorage.googleapis.com/v0/b/weather-app-20242310.appspot.com/o/profilePic%2Fblank-profile-picture-973460-anonymous-avatar.jpg?alt=media&token=3fcd761c-7efb-4245-a50c-bf6063cae348") ;
+                      await firestoreService.createOrEditUser(user) ;
+                      Provider.of<UserProvider>(context, listen: false).setUser(user) ;
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage())) ;
+                    }
+                    if ( response == true ) {
+                      AppUser user = await firestoreService.getUser(credentials.user!.email!) ;
+                      Provider.of<UserProvider>(context , listen: false).setUser(user) ;
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage())) ;
+                    }
                 },
                 child: Text("Sign in with Google"),
               ),

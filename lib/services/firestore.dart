@@ -47,4 +47,29 @@ class FirestoreService {
   }
 }
 
+  Future<bool> doesUserExist(String email) async{
+    final docRef = db.collection("users").doc(email);
+  
+  try {    
+    DocumentSnapshot doc = await docRef.get();   
+    if (doc.exists) {     
+      var data = doc.data() as Map<String, dynamic>;
+      AppUser user = AppUser(
+        firstName: data['First Name'],  
+        lastName: data['Last Name'],    
+        country: data['Country'],      
+        city: data['City'],            
+        email: email , 
+        profilePic: data['Profile Picture']                   
+      );
+      return true;
+    } else {
+      return false ;
+    }
+  } catch (e) {
+    print("Error getting document: $e");
+    return false ;
+  }
+  }
+
 }
