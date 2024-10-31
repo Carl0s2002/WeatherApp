@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:wheather_app/models/user.dart';
+import 'package:wheather_app/models/weather.dart';
 
 class FirestoreService {
 
@@ -71,5 +72,54 @@ class FirestoreService {
     return false ;
   }
   }
+
+  Future<void> createOrEditWeather(Weather weather)async {
+
+      final weatherDetails = <String, dynamic>{
+      "City" :weather.name , 
+      "Temperature" : weather.temp , 
+      "Description" : weather.description ,  
+      "Clouds" : weather.clouds ,
+      "Rain" : weather.humidity , 
+      "Visibilty" : weather.visibility , 
+      "Wind Speed" : weather.wind , 
+      "Humidity" : weather.humidity , 
+    } ;
+    await db
+              .collection("weather")
+              .doc(weather.name)
+              .set(weatherDetails)
+              .onError((e, _) => print("Error when writing document: $e")) ;
+
+  }
+
+
+  Future<Weather> fetchWeatherData(String city) async{
+    final docRef = db.collection("weather").doc(city);
+  
+  try {    
+    DocumentSnapshot doc = await docRef.get();   
+    if (doc.exists) {     
+      var data = doc.data() as Map<String, dynamic>;
+      Weather weather = Weather(
+        name :data["City"] , 
+        temp : data["Temperature"] , 
+        description : data["Description"] ,  
+        clouds : data["Clouds"] ,
+        humidity : data["Rain"] , 
+        visibility : data["Visibilty"] , 
+        wind : data["Wind Speed"] ,                     
+      );
+      return weather;
+    } else {
+      throw Exception("User not found");
+    }
+  } catch (e) {
+    print("Error getting document: $e");
+    throw e; 
+  }
+  }
+
+
 
 }

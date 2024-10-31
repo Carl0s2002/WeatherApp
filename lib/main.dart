@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:wheather_app/providers/weather_provider.dart';
 import 'package:wheather_app/screens/login_page.dart';
 import 'firebase_options.dart';
 
@@ -14,10 +15,12 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => UserProvider(),
-      child: const MyApp(),
-    ),);
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => WeatherProvider()),
+      ],
+      child: const MyApp(), ),);
 }
 
 class MyApp extends StatelessWidget {
